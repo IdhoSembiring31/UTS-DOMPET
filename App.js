@@ -15,14 +15,13 @@ import {
 } from 'react-native';
 
 const App = () => {
-  // ========== STATE MANAGEMENT (ARRAY OBJECT) ==========
+ 
   const [transactions, setTransactions] = useState([]);
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
   const [fadeAnim] = useState(new Animated.Value(1));
 
-  // ========== HITUNG TOTAL SALDO ==========
-  // Rumus: Total Pemasukan - Total Pengeluaran
+
   const calculateBalance = () => {
     let totalPemasukan = 0;
     let totalPengeluaran = 0;
@@ -35,23 +34,23 @@ const App = () => {
       }
     });
     
-    // Saldo = PEMASUKAN - PENGELUARAN
+   
     return totalPemasukan - totalPengeluaran;
   };
 
   const balance = calculateBalance();
 
-  // Hitung total pemasukan
+
   const totalIncome = transactions
     .filter(item => item.tipe === 'masuk')
     .reduce((sum, item) => sum + item.nominal, 0);
 
-  // Hitung total pengeluaran
+
   const totalExpense = transactions
     .filter(item => item.tipe === 'keluar')
     .reduce((sum, item) => sum + item.nominal, 0);
 
-  // ========== FORMAT RUPIAH ==========
+  
   const formatRupiah = (value) => {
     const formatted = new Intl.NumberFormat('id-ID', {
       style: 'currency',
@@ -59,14 +58,14 @@ const App = () => {
       minimumFractionDigits: 0,
     }).format(Math.abs(value));
     
-    // Untuk nilai negatif, tambahkan tanda minus di depan
+   
     if (value < 0) {
       return `-${formatted}`;
     }
     return formatted;
   };
 
-  // ========== VALIDASI FORM ==========
+
   const validateForm = () => {
     if (!description.trim()) {
       Alert.alert('Oops!', 'Deskripsi transaksi tidak boleh kosong ✏️');
@@ -83,32 +82,31 @@ const App = () => {
     return true;
   };
 
-  // ========== TAMBAH TRANSAKSI (ARRAY OBJECT) ==========
+ 
   const addTransaction = (type) => {
     if (!validateForm()) return;
 
-    // Animasi feedback
+  
     Animated.sequence([
       Animated.timing(fadeAnim, { toValue: 0.5, duration: 100, useNativeDriver: true }),
       Animated.timing(fadeAnim, { toValue: 1, duration: 100, useNativeDriver: true }),
     ]).start();
 
-    // STRUCTURE OBJECT SESUAI SOAL
+   
     const newTransaction = {
       id: Date.now().toString(),
       ket: description.trim(),
       nominal: parseFloat(amount),
-      tipe: type, // 'masuk' atau 'keluar'
+      tipe: type, 
     };
 
-    // UPDATE STATE ARRAY
     setTransactions([newTransaction, ...transactions]);
     
-    // RESET FORM
+  
     setDescription('');
     setAmount('');
     
-    // FEEDBACK SUKSES
+   
     Alert.alert(
       'Berhasil! 🎉',
       `Transaksi ${type === 'masuk' ? 'Pemasukan' : 'Pengeluaran'} telah ditambahkan`,
@@ -116,7 +114,7 @@ const App = () => {
     );
   };
 
-  // ========== HAPUS TRANSAKSI ==========
+
   const deleteTransaction = (id, ket, nominal, tipe) => {
     Alert.alert(
       'Hapus Transaksi',
@@ -135,7 +133,7 @@ const App = () => {
     );
   };
 
-  // ========== RENDER ITEM TRANSAKSI ==========
+  
   const renderTransactionItem = ({ item, index }) => (
     <TouchableOpacity
       style={styles.transactionCard}
@@ -172,7 +170,7 @@ const App = () => {
     </TouchableOpacity>
   );
 
-  // ========== EMPTY STATE ==========
+ 
   const EmptyList = () => (
     <View style={styles.emptyContainer}>
       <View style={styles.emptyIconContainer}>
@@ -188,7 +186,7 @@ const App = () => {
     </View>
   );
 
-  // ========== MAIN RENDER ==========
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#1B3B2B" />
@@ -197,7 +195,7 @@ const App = () => {
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
-        {/* ========== HEADER DENGAN SALDO ========== */}
+     
         <View style={styles.header}>
           <View style={styles.headerTop}>
             <Text style={styles.appName}>DompetKu</Text>
@@ -229,7 +227,7 @@ const App = () => {
             </View>
           </View>
 
-          {/* Ringkasan Pemasukan & Pengeluaran */}
+      
           <View style={styles.summaryRow}>
             <View style={styles.summaryCard}>
               <Text style={styles.summaryIcon}>📈</Text>
@@ -245,7 +243,7 @@ const App = () => {
           </View>
         </View>
 
-        {/* ========== FORM INPUT ========== */}
+      
         <View style={styles.formSection}>
           <Text style={styles.sectionTitle}>
             <Text style={styles.sectionIcon}>✏️</Text> Catat Transaksi
@@ -270,7 +268,7 @@ const App = () => {
             />
           </View>
 
-          {/* 2 TOMBOL: PEMASUKAN & PENGELUARAN */}
+        
           <View style={styles.buttonRow}>
             <TouchableOpacity
               style={[styles.btn, styles.btnIncome]}
@@ -296,7 +294,7 @@ const App = () => {
           </Text>
         </View>
 
-        {/* ========== RIWAYAT TRANSAKSI (FLATLIST) ========== */}
+       
         <View style={styles.historySection}>
           <View style={styles.historyHeader}>
             <Text style={styles.sectionTitle}>
@@ -321,14 +319,14 @@ const App = () => {
   );
 };
 
-// ========== STYLES (DESAIN KEREN) ==========
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F0F4F0',
   },
   
-  // HEADER STYLES
+
   header: {
     backgroundColor: '#1B3B2B',
     paddingTop: Platform.OS === 'ios' ? 10 : 40,
@@ -407,7 +405,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   
-  // SUMMARY ROW
+
   summaryRow: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
@@ -445,7 +443,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.15)',
   },
   
-  // FORM SECTION
+
   formSection: {
     backgroundColor: '#FFF',
     margin: 16,
@@ -615,7 +613,7 @@ const styles = StyleSheet.create({
     color: '#FF3B30',
   },
   
-  // EMPTY STATE
+
   emptyContainer: {
     alignItems: 'center',
     paddingVertical: 50,
