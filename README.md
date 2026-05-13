@@ -7,7 +7,7 @@ NIM : 243303621251
 TUGAS UTS DOMPET
 
 
-<img width="500" height="900" alt="3" src="https://github.com/user-attachments/assets/f3fbbd53-cea9-499e-9543-f27d5de0f77f" />
+<img width="450" height="900" alt="3" src="https://github.com/user-attachments/assets/f3fbbd53-cea9-499e-9543-f27d5de0f77f" />
 
 
 <img width="575" height="1280" alt="1" src="https://github.com/user-attachments/assets/aabe2fc1-af12-4034-8631-88f1b4423c9d" />
