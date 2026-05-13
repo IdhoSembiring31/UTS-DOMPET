@@ -18,7 +18,7 @@ NIM : 243303621251
 
 **Tidak bisa menambahkan jika data kosong / belum di isi**
 
-<img width="575" height="1280" alt="2" src="https://github.com/user-attachments/assets/87c707f7-9ff1-4221-bd16-859c38e1ffad" />
+<img width="450" height="900" alt="2" src="https://github.com/user-attachments/assets/87c707f7-9ff1-4221-bd16-859c38e1ffad" />
 
 
 
