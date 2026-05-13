@@ -22,16 +22,21 @@ const App = () => {
   const [fadeAnim] = useState(new Animated.Value(1));
 
   // ========== HITUNG TOTAL SALDO ==========
+  // Rumus: Total Pemasukan - Total Pengeluaran
   const calculateBalance = () => {
-    let total = 0;
+    let totalPemasukan = 0;
+    let totalPengeluaran = 0;
+    
     transactions.forEach(item => {
       if (item.tipe === 'masuk') {
-        total += item.nominal;
+        totalPemasukan += item.nominal;
       } else {
-        total -= item.nominal;
+        totalPengeluaran += item.nominal;
       }
     });
-    return total;
+    
+    // Saldo = PEMASUKAN - PENGELUARAN
+    return totalPemasukan - totalPengeluaran;
   };
 
   const balance = calculateBalance();
@@ -48,11 +53,17 @@ const App = () => {
 
   // ========== FORMAT RUPIAH ==========
   const formatRupiah = (value) => {
-    return new Intl.NumberFormat('id-ID', {
+    const formatted = new Intl.NumberFormat('id-ID', {
       style: 'currency',
       currency: 'IDR',
       minimumFractionDigits: 0,
-    }).format(value);
+    }).format(Math.abs(value));
+    
+    // Untuk nilai negatif, tambahkan tanda minus di depan
+    if (value < 0) {
+      return `-${formatted}`;
+    }
+    return formatted;
   };
 
   // ========== VALIDASI FORM ==========
@@ -127,10 +138,7 @@ const App = () => {
   // ========== RENDER ITEM TRANSAKSI ==========
   const renderTransactionItem = ({ item, index }) => (
     <TouchableOpacity
-      style={[
-        styles.transactionCard,
-        { animationDelay: `${index * 50}ms` }
-      ]}
+      style={styles.transactionCard}
       onLongPress={() => deleteTransaction(item.id, item.ket, item.nominal, item.tipe)}
       activeOpacity={0.7}
     >
@@ -207,12 +215,15 @@ const App = () => {
               { opacity: fadeAnim },
               balance >= 0 ? styles.balancePositive : styles.balanceNegative
             ]}>
-              {formatRupiah(Math.abs(balance))}
+              {formatRupiah(balance)}
             </Animated.Text>
             <View style={styles.badgeContainer}>
-              <View style={styles.badge}>
+              <View style={[
+                styles.badge,
+                balance >= 0 ? styles.badgePositive : styles.badgeNegative
+              ]}>
                 <Text style={styles.badgeText}>
-                  {balance >= 0 ? '💚 Hemat' : '❤️ Defisit'}
+                  {balance >= 0 ? '💚 Aman' : '❤️ Darurat'}
                 </Text>
               </View>
             </View>
@@ -380,10 +391,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   badge: {
-    backgroundColor: 'rgba(255,255,255,0.15)',
     paddingHorizontal: 16,
     paddingVertical: 6,
     borderRadius: 20,
+  },
+  badgePositive: {
+    backgroundColor: 'rgba(168, 230, 207, 0.2)',
+  },
+  badgeNegative: {
+    backgroundColor: 'rgba(255, 179, 179, 0.2)',
   },
   badgeText: {
     color: '#FFF',
@@ -631,6 +647,7 @@ const styles = StyleSheet.create({
   emptyHint: {
     backgroundColor: '#F0F4F0',
     paddingHorizontal: 16,
+    paddingVertical: 8,
     borderRadius: 20,
   },
   emptyHintText: {
