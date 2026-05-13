@@ -5,6 +5,7 @@ NAMA = IDHO JONATHAN SEMBIRING
 
 NIM : 243303621251
 
+Expo:https://snack.expo.dev/@idhosembiring3107/uts-dompet
 
 
 **Kondisi Awal**
